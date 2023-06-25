@@ -1,5 +1,6 @@
 import sys
 import os
+import shutil
 from PyQt6.QtWidgets import (QWidget, QLabel, QLineEdit, QMessageBox,
                              QTextEdit, QGridLayout, QApplication, QPushButton,
                              QFileDialog, QHBoxLayout, QListWidget, QListWidgetItem)
@@ -13,7 +14,7 @@ class MainWindow(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.clear_cache()
+        self.create_cache()
         self.setWindowTitle("Auto PPT")
         self.setWindowTitle("Autoppt")
         self.page_elements = {
@@ -39,10 +40,32 @@ class MainWindow(QWidget):
         self.pages = {} #1: {'Chapter_Name': '', 'Image_Path': '', 'Content_Text': ''}
         self.initUI()
 
+    def create_cache(self):
+        if not os.path.exists('./temp/image'):
+            os.mkdir('./temp/image')
+
     def clear_cache(self):
         for img in os.listdir('./temp/image'):
             if img.endswith('.jpg'):
                 os.remove(img)
+
+    def remove_cache(self):
+        if os.path.exists('./temp/image'):
+            shutil.rmtree('./temp/image')
+
+    def closeEvent(self, event):
+        # Show a confirmation dialog
+        reply = QMessageBox.question(
+            self, "Confirmation", "Are you sure you want to exit?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+
+        # If the user confirms, close the window
+        if reply == QMessageBox.StandardButton.Yes:
+            self.remove_cache()
+            event.accept()
+        else:
+            event.ignore()
 
     def manage_page_element(self):
         # connect change page action
