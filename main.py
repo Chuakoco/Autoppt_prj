@@ -41,17 +41,17 @@ class MainWindow(QWidget):
         self.initUI()
 
     def create_cache(self):
-        if not os.path.exists('./temp/image'):
-            os.mkdir('./temp/image')
+        if not os.path.exists(os.getcwd()+'/temp/image'):
+            os.mkdir(os.getcwd()+'/temp/image')
 
     def clear_cache(self):
-        for img in os.listdir('./temp/image'):
+        for img in os.listdir(os.getcwd()+'/temp/image'):
             if img.endswith('.jpg'):
                 os.remove(img)
 
     def remove_cache(self):
-        if os.path.exists('./temp/image'):
-            shutil.rmtree('./temp/image')
+        if os.path.exists(os.getcwd()+'/temp'):
+            shutil.rmtree(os.getcwd()+'/temp')
 
     def closeEvent(self, event):
         # Show a confirmation dialog
