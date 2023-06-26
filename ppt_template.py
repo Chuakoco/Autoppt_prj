@@ -40,7 +40,8 @@ class VBACodeGenerator:
 
         # Save the cropped image
         # cropped_image_path = os.path.splitext(image_path)[0] + "_cropped.jpg"
-        cropped_image_path = "./temp/image" + "_cropped.jpg"
+        # cropped_image_path = "./temp/image" + "_cropped.jpg"
+        cropped_image_path = os.getcwd()+'/temp/image/'+"image_cropped.jpg"
         cropped_image.save(cropped_image_path)
 
         return cropped_image_path
@@ -94,8 +95,15 @@ class VBACodeGenerator:
         return macro
 
     def make_cover(self):
-        current_episode = 12
-        image_path = r"C:\Users\htzha\Pictures\Screen Shot\夜撫でるメノウ.jpg"
+        # read current path, check the latest episode number
+        current_episode = 1
+        # if os.path.exists(os.getcwd()):
+        #     for file in os.listdir(os.getcwd()):
+        #         if file.endswith('.pptx'):
+
+
+        # image_path = r"C:\Users\htzha\Pictures\Screen Shot\夜撫でるメノウ.jpg"
+        image_path = os.getcwd() + "/resource/amaranth.png"
         text_box_width = 600 / 612 * self.slide_width
         text_box_height = 50
 
