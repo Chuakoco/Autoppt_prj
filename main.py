@@ -157,6 +157,14 @@ class MainWindow(QWidget):
                 200, mode=Qt.TransformationMode.SmoothTransformation
             ))
 
+            # save to page
+            current_row = self.page_elements["L_Block_Navi"].currentRow()
+            self.pages[current_row] = {
+                'Chapter_Name': self.page_elements["M_Block_ChapterTitle"].text(),
+                'Image_Path': file_path,
+                'Content_Text': self.page_elements["M_Block_Text"].toPlainText()
+            }
+
     def action_addPage(self):
         # detect current page
         current_row = self.page_elements["L_Block_Navi"].currentRow()
@@ -213,7 +221,7 @@ class MainWindow(QWidget):
         )
         self.pages[current_row] = {
             'Chapter_Name': self.page_elements["M_Block_ChapterTitle"].text(),
-            'Image_Path': self.page_elements["Path_image"],
+            'Image_Path': self.pages[current_row]["Image_Path"],
             'Content_Text': self.page_elements["M_Block_Text"].toPlainText()
         }
 

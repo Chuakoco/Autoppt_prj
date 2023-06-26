@@ -1,6 +1,7 @@
 from PIL import Image
 import datetime
 import os
+import re
 
 class VBACodeGenerator:
 
@@ -39,9 +40,8 @@ class VBACodeGenerator:
         cropped_image = image.crop((left, top, right, bottom))
 
         # Save the cropped image
-        # cropped_image_path = os.path.splitext(image_path)[0] + "_cropped.jpg"
-        # cropped_image_path = "./temp/image" + "_cropped.jpg"
-        cropped_image_path = os.getcwd()+'/temp/image/'+"image_cropped.jpg"
+        match = re.search(r"(.*)(?=\.)", image_path.split("/")[-1])
+        cropped_image_path = os.getcwd() + '/temp/image/' + f"{match.group()}_cropped.jpg"
         cropped_image.save(cropped_image_path)
 
         return cropped_image_path
@@ -102,7 +102,6 @@ class VBACodeGenerator:
         #         if file.endswith('.pptx'):
 
 
-        # image_path = r"C:\Users\htzha\Pictures\Screen Shot\夜撫でるメノウ.jpg"
         image_path = os.getcwd() + "/resource/amaranth.png"
         text_box_width = 600 / 612 * self.slide_width
         text_box_height = 50
@@ -305,88 +304,11 @@ class VBACodeGenerator:
 
         content_page = "".join(content_page)
 
-
-        # content_page = f"""
-        #     ' 新建页面
-        #     Set Slide = Presentation.Slides.Add({self.current_page}, 11)
-        #
-        #     ' 插入背景图片
-        #     Set Shape = Slide.Shapes.AddPicture("{image_path}", msoFalse, msoTrue, 0, 0)
-        #     ' 锁定图片宽高比
-        #     Shape.LockAspectRatio = msoTrue
-        #     Shape.Height = {self.slide_height}
-        #     Shape.Fill.PictureEffects.Insert(msoEffectBlur).EffectParameters(1).Value = 100
-        #     Shape.PictureFormat.Brightness = 0.2
-        #     Shape.PictureFormat.Contrast = 0.2
-        #     Shape.Left = {self.slide_width / 2} - Shape.Width/2
-        #
-        #     ' 插入日期文本框
-        #     Set Shape = Slide.Shapes.AddTextbox(1, 100, 100, {self.figure_width}, 0)
-        #     Shape.TextFrame.TextRange.Text = "{today}"& vbNewLine &"星期{week}"
-        #     Shape.TextFrame.TextRange.Font.Size = 36
-        #     Shape.TextFrame.TextRange.Font.NameFarEast = "OPlusSans 3.0 Bold"
-        #     Shape.TextFrame.TextRange.Font.Name = "OPlusSans 3.0 Bold"
-        #     Shape.TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
-        #     Shape.TextFrame.TextRange.ParagraphFormat.Alignment = ppAlignRight
-        #     Shape.Left = {self.slide_width / 2 - self.figure_width / 2}
-        #     Shape.Top = {self.slide_height * 0.15}
-        #
-        #     ' 插入对角圆角矩形（底）
-        #     Set Shape = Slide.Shapes.AddShape(msoShapeRound2DiagRectangle, 10 , 100, 250, 80)
-        #     Shape.Fill.ForeColor.RGB = RGB(174, 66, 7)
-        #     Shape.Adjustments.Item(1) = 1 ' 替换 0.5 为你想要的圆角半径值
-        #     Shape.Line.Visible = msoFalse
-        #     Shape.left = {self.slide_width / 2 - self.figure_width / 2 + 0.01 * self.slide_width}
-        #     Shape.Top = {self.slide_height * 0.15 - 0.01 * self.slide_width}
-        #
-        #     ' 插入章节标题对角圆角矩形（表）
-        #     Set Shape = Slide.Shapes.AddShape(msoShapeRound2DiagRectangle, 5 , 90, 250, 80)
-        #     Shape.Fill.ForeColor.RGB = RGB(255, 165, 0)
-        #     Shape.TextFrame.TextRange.Text = "{chapter_name}"
-        #     Shape.TextFrame.TextRange.Font.Size = 42
-        #     Shape.TextFrame.TextRange.Font.NameFarEast = "OPlusSans 3.0 Bold"
-        #     Shape.TextFrame.TextRange.Font.Name = "OPlusSans 3.0 Bold"
-        #     Shape.TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
-        #     Shape.Adjustments.Item(1) = 1 ' 替换 0.5 为你想要的圆角半径值
-        #     Shape.Line.Visible = msoFalse
-        #     Shape.left = {self.slide_width / 2 - self.figure_width / 2}
-        #     Shape.Top = {self.slide_height * 0.15}
-        #
-        #     ' 插入圆角矩形（分隔栏）
-        #     Set Shape = Slide.Shapes.AddShape(msoShapeRoundedRectangle, 10 , 100, {self.figure_width}, 2)
-        #     Shape.Fill.ForeColor.RGB = RGB(255, 255, 255)
-        #     Shape.Fill.Transparency = 0.5
-        #     Shape.Line.Visible = msoFalse
-        #     Shape.Adjustments.Item(1) = 1 ' 替换 0.5 为你想要的圆角半径值
-        #     Shape.left = {self.slide_width / 2 - self.figure_width / 2}
-        #     Shape.Top = {self.slide_height * 0.59}
-        #
-        #     ' 插入图片
-        #     Set Shape = Slide.Shapes.AddPicture("{image_path}", msoFalse, msoTrue, 100, 100)
-        #     Shape.AutoShapeType = msoShapeRoundedRectangle
-        #     Shape.Adjustments.Item(1) = 0.02 ' 替换 0.5 为你想要的圆角半径值
-        #     Shape.LockAspectRatio = msoTrue ' 锁定图片宽高比
-        #     Shape.Width = 592
-        #     Shape.Left = {self.slide_width / 2} - Shape.Width/2
-        #     Shape.Top = {self.slide_height * 0.235}
-        #
-        #     ' 插入内容文本框
-        #     Set Shape = Slide.Shapes.AddTextbox(1, 100, 100, {self.figure_width}, 200)
-        #     Shape.TextFrame.TextRange.Text = "{content_text}"
-        #     Shape.TextFrame.TextRange.Font.Size = 33
-        #     Shape.TextFrame.TextRange.Font.NameFarEast = "OPlusSans 3.0 Medium"
-        #     Shape.TextFrame.TextRange.Font.Name = "OPlusSans 3.0"
-        #     Shape.TextFrame.TextRange.Font.Color.RGB = RGB(255, 255, 255)
-        #     Shape.Left = {self.slide_width / 2} - Shape.Width/2
-        #     Shape.Top = {self.slide_height * 0.6}
-        #     Shape.TextFrame.TextRange.ParagraphFormat.Alignment = ppAlignJustify
-        # """
-
         self.current_page += 1
         return content_page
 
     def make_end(self):
-        image_path = r"C:\Users\htzha\Pictures\Screen Shot\warning.svg"
+        image_path = r"D:\Documents\Autoppt_prj\dist\resource\warning.svg"
         warning_text = "视频仅作个人经验分享，不构成任何投资建议，对于跟随本视频投资造成的损失概不负责。"
         ending_page = f"""
             ' 新建页面
