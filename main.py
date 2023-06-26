@@ -42,7 +42,7 @@ class MainWindow(QWidget):
 
     def create_cache(self):
         if not os.path.exists(os.getcwd()+'/temp/image'):
-            os.mkdir(os.getcwd()+'/temp/image')
+            os.makedirs(os.getcwd()+'/temp/image')
 
     def clear_cache(self):
         for img in os.listdir(os.getcwd()+'/temp/image'):
